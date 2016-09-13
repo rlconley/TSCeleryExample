@@ -1,8 +1,10 @@
 from __future__ import absolute_import
 import requests
 
+from urllib.parse import urljoin
+
 from bs4 import BeautifulSoup
-from celery import app
+from .celery import app
 
 
 @app.task
@@ -18,3 +20,4 @@ def song_links():
         urljoin('http://www.azlyrics.com/lyrics/taylorswift.html', link) for
         link in links_list]
     return actual_links
+
