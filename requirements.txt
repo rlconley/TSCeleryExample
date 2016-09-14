@@ -1,3 +1,10 @@
-python>=3.5.2
-BeautifulSoup4>=4.4.0
-celery>=3.1
+celery==3.1.23
+# Required by Celery
+amqp==1.4.9
+anyjson==0.3.3
+billiard==3.3.0.23
+kombu==3.0.35
+pytz==2016.6.1
+# Required by task code
+beautifulsoup4==4.5.1
+requests==2.11.1
