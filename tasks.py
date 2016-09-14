@@ -4,7 +4,7 @@ import requests
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
-from celeryappdd import app
+from celeryapp import app
 
 
 @app.task
