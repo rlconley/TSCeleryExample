@@ -9,12 +9,3 @@ app.conf.update(
     CELERY_TASK_SERIALIZER='json',
     CELERY_ACCEPT_CONTENT=['json'],
 )
-
-if __name__ == '__main__':
-    app.start()
-
-app.conf.update(
-    CELERY_ROUTES = {
-        'proj.tasks.add': {'queue': 'hipri'},
-    },
-)
