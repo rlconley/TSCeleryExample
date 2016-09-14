@@ -17,8 +17,9 @@ def song_links():
     links = parsed_content.find(id='listAlbum').find_all('a', href=True)
     for link in links:
         href = link.get('href')
+        title = link.text
         url = urljoin('http://www.azlyrics.com/lyrics/taylorswift.html', href)
-        song_lyrics.delay(url)
+        song_lyrics.delay(url, title)
 
 @app.task
 def song_lyrics(url, title):
@@ -28,5 +29,6 @@ def song_lyrics(url, title):
     # parent_div = parsed_content.find("div", {"class": "main-page"})
     lyrics = parsed_content.find('div', {'class': 'ringtone'}).find_next_sibling('div')
     saved_lyrics = open("lyrics.txt", "w")
-    saved_lyrics.write(lyrics)
+    saved_lyrics.write(title.text)
+    saved_lyrics.write(lyrics.text)
     saved_lyrics.close()
