@@ -21,3 +21,10 @@ With the requirements installed you can run the worker:
 
     (celery-example) $ celery -A celeryapp worker
 
+Before kicking off the tasks you need to create the directory where there output
+will be stored:
+
+.. code-block:: bash
+
+    $ mkdir results
+
