@@ -14,10 +14,12 @@ USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot
 @app.task
 def song_links():
     page = requests.get(
-        'http://www.azlyrics.com/t/taylorswift.html',
+        'http://www.songlyrics.com/taylor-swift-lyrics/',
         headers={'user-agent': USER_AGENT})
     parsed_content = BeautifulSoup(page.content, 'html.parser')
-    links = parsed_content.find(id='listAlbum').find_all('a', href=True)
+    links = parsed_content.find('div', {'id': 'colone-container'})
+    links = links.find('table', {'class': 'tracklist'})
+    links = links.find_all('a')
     for i, link in enumerate(links):
         href = link.get('href')
         title = link.text
@@ -31,11 +33,10 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 
 @app.task
 def song_lyrics(url, title):
-    page = requests.get(url, headers={'user-agent': USER_AGENT})
-    content = page.text.replace('<br>', '').encode('utf-8')
-    parsed_content = BeautifulSoup(content, 'html.parser')
-    ringtone = parsed_content.find('div', {'class': 'ringtone'})
-    lyrics = ringtone.find_next_sibling('div').text
+    page = requests.get(url, headers={'user-agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'})
+    # have to mimic google bot here
+    parsed_content = BeautifulSoup(page.content, 'html.parser')
+    lyrics = parsed_content.find('p', {'id':'songLyricsDiv'}).text
     filename = os.path.join(OUTPUT_DIR, '{}.txt'.format(title))
     with open(filename, 'w') as lyric_file:
         lyric_file.write(lyrics)
