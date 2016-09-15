@@ -26,7 +26,7 @@ def song_links():
             kwargs={'url': url, 'title': title}, countdown=i // 4)
 
 
-OUTPUT_DIR = os.path.join(os.dirname(__file__), 'results')
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 
 
 @app.task
