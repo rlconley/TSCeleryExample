@@ -5,10 +5,21 @@ import requests
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
+from celery.utils.log import get_task_logger
 from celeryapp import app
 
 
 USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+
+logger = get_task_logger(__name__)
+
+
+@app.task
+def red(action='loving', color='red', description=''):
+    message = '{action} him was {color}{description}.'.format(
+                action=action.title(), color=color,
+                description=' ' + description if description else '')
+    logger.info(message)
 
 
 @app.task
@@ -29,6 +40,7 @@ def song_links():
 
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
+
 
 
 @app.task
