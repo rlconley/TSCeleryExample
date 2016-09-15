@@ -8,14 +8,9 @@ from bs4 import BeautifulSoup
 from celeryapp import app
 
 
-USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
-
-
 @app.task
 def song_links():
-    page = requests.get(
-        'http://www.songlyrics.com/taylor-swift-lyrics/',
-        headers={'user-agent': USER_AGENT})
+    page = requests.get('http://www.songlyrics.com/taylor-swift-lyrics/')
     parsed_content = BeautifulSoup(page.content, 'html.parser')
     links = parsed_content.find('div', {'id': 'colone-container'})
     links = links.find('table', {'class': 'tracklist'})
@@ -33,7 +28,7 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 
 @app.task
 def song_lyrics(url, title):
-    page = requests.get(url, headers={'user-agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'})
+    page = requests.get(url)
     # have to mimic google bot here
     parsed_content = BeautifulSoup(page.content, 'html.parser')
     lyrics = parsed_content.find('p', {'id':'songLyricsDiv'}).text
