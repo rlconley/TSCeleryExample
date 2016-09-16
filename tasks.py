@@ -29,7 +29,6 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 @app.task
 def song_lyrics(url, title):
     page = requests.get(url)
-    # have to mimic google bot here
     parsed_content = BeautifulSoup(page.content, 'html.parser')
     lyrics = parsed_content.find('p', {'id':'songLyricsDiv'}).text
     filename = os.path.join(OUTPUT_DIR, '{}.txt'.format(title))
